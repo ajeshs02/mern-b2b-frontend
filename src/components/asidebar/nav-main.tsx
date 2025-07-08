@@ -15,8 +15,9 @@ import {
 } from "@/components/ui/sidebar";
 import { Link, useLocation } from "react-router-dom";
 import useWorkspaceId from "@/hooks/use-workspace-id";
-import { useAuthContext } from "@/context/auth-provider";
 import { Permissions } from "@/constant";
+import { useAppSelector } from "@/hooks/redux-hooks";
+import { selectHasPermission } from "@/features/auth/authSelectors";
 
 type ItemType = {
   title: string;
@@ -25,10 +26,8 @@ type ItemType = {
 };
 
 export function NavMain() {
-  const { hasPermission } = useAuthContext();
-
-  const canManageSettings = hasPermission(
-    Permissions.MANAGE_WORKSPACE_SETTINGS
+  const canManageSettings = useAppSelector((state) =>
+    selectHasPermission(state, Permissions.MANAGE_WORKSPACE_SETTINGS)
   );
 
   const workspaceId = useWorkspaceId();

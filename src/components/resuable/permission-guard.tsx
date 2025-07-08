@@ -1,6 +1,7 @@
 import React from "react";
 import { PermissionType } from "@/constant";
-import { useAuthContext } from "@/context/auth-provider";
+import { useAppSelector } from "@/hooks/redux-hooks";
+import { selectHasPermission } from "@/features/auth/authSelectors";
 
 type PermissionsGuardProps = {
   requiredPermission: PermissionType;
@@ -13,9 +14,11 @@ const PermissionsGuard: React.FC<PermissionsGuardProps> = ({
   showMessage = false,
   children,
 }) => {
-  const { hasPermission } = useAuthContext();
+  const canAccess = useAppSelector((state) =>
+    selectHasPermission(state, requiredPermission)
+  );
 
-  if (!hasPermission(requiredPermission)) {
+  if (!canAccess) {
     return (
       showMessage && (
         <div

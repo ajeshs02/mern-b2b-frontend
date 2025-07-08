@@ -2,15 +2,21 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useAuthContext } from "@/context/auth-provider";
 import { toast } from "@/hooks/use-toast";
 import { CheckIcon, CopyIcon, Loader } from "lucide-react";
 import { BASE_ROUTE } from "@/routes/common/routePaths";
 import PermissionsGuard from "@/components/resuable/permission-guard";
 import { Permissions } from "@/constant";
+import { useAppSelector } from "@/hooks/redux-hooks";
+import {
+  selectWorkspace,
+  selectWorkspaceLoading,
+} from "@/features/workspace/workspaceSelectors";
 
 const InviteMember = () => {
-  const { workspace, workspaceLoading } = useAuthContext();
+  const workspace = useAppSelector(selectWorkspace);
+  const workspaceLoading = useAppSelector(selectWorkspaceLoading);
+
   const [copied, setCopied] = useState(false);
 
   const inviteUrl = workspace

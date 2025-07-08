@@ -28,10 +28,12 @@ import { NavMain } from "./nav-main";
 import { NavProjects } from "./nav-projects";
 import { Separator } from "../ui/separator";
 import useWorkspaceId from "@/hooks/use-workspace-id";
-import { useAuthContext } from "@/context/auth-provider";
+import { useAppSelector } from "@/hooks/redux-hooks";
+import { selectAuthLoading, selectUser } from "@/features/auth/authSelectors";
 
 const Asidebar = () => {
-  const { isLoading, user } = useAuthContext();
+  const user = useAppSelector(selectUser);
+  const isLoading = useAppSelector(selectAuthLoading);
 
   const { open } = useSidebar();
   const workspaceId = useWorkspaceId();
