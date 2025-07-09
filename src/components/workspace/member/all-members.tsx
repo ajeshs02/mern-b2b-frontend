@@ -17,17 +17,20 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { getAvatarColor, getAvatarFallbackText } from "@/lib/helper";
-import { useAuthContext } from "@/context/auth-provider";
 import useWorkspaceId from "@/hooks/use-workspace-id";
 import useGetWorkspaceMembers from "@/hooks/api/use-get-workspace-members";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { changeWorkspaceMemberRoleMutationFn } from "@/lib/api";
 import { toast } from "@/hooks/use-toast";
 import { Permissions } from "@/constant";
+import { useAppSelector } from "@/hooks/redux-hooks";
+import { selectHasPermission, selectUser } from "@/features/auth/authSelectors";
 const AllMembers = () => {
-  const { user, hasPermission } = useAuthContext();
+  const user = useAppSelector(selectUser);
 
-  const canChangeMemberRole = hasPermission(Permissions.CHANGE_MEMBER_ROLE);
+  const canChangeMemberRole = useAppSelector((state) =>
+    selectHasPermission(state, Permissions.CHANGE_MEMBER_ROLE)
+  );
 
   const queryClient = useQueryClient();
   const workspaceId = useWorkspaceId();
@@ -81,7 +84,10 @@ const AllMembers = () => {
         const initials = getAvatarFallbackText(name);
         const avatarColor = getAvatarColor(name);
         return (
-          <div className="flex items-center justify-between space-x-4">
+          <div
+            className="flex items-center justify-between space-x-4"
+            key={member._id}
+          >
             <div className="flex items-center space-x-4">
               <Avatar className="h-8 w-8">
                 <AvatarImage

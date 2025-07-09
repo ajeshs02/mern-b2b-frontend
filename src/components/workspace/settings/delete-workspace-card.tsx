@@ -2,7 +2,8 @@ import { ConfirmDialog } from "@/components/resuable/confirm-dialog";
 import PermissionsGuard from "@/components/resuable/permission-guard";
 import { Button } from "@/components/ui/button";
 import { Permissions } from "@/constant";
-import { useAuthContext } from "@/context/auth-provider";
+import { selectWorkspace } from "@/features/workspace/workspaceSelectors";
+import { useAppSelector } from "@/hooks/redux-hooks";
 import useConfirmDialog from "@/hooks/use-confirm-dialog";
 import { toast } from "@/hooks/use-toast";
 import useWorkspaceId from "@/hooks/use-workspace-id";
@@ -11,7 +12,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
 const DeleteWorkspaceCard = () => {
-  const { workspace } = useAuthContext();
+  const workspace = useAppSelector(selectWorkspace);
+
   const navigate = useNavigate();
 
   const queryClient = useQueryClient();

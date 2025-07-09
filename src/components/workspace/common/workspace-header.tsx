@@ -1,9 +1,16 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { useAuthContext } from "@/context/auth-provider";
+
+import {
+  selectWorkspace,
+  selectWorkspaceLoading,
+} from "@/features/workspace/workspaceSelectors";
+import { useAppSelector } from "@/hooks/redux-hooks";
 import { Loader } from "lucide-react";
 
 const WorkspaceHeader = () => {
-  const { workspaceLoading, workspace } = useAuthContext();
+  const workspace = useAppSelector(selectWorkspace);
+  const workspaceLoading = useAppSelector(selectWorkspaceLoading);
+
   return (
     <div className="w-full max-w-3xl mx-auto pb-2">
       {workspaceLoading ? (

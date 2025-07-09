@@ -12,7 +12,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "../ui/textarea";
-import { useAuthContext } from "@/context/auth-provider";
 import { useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { editWorkspaceMutationFn } from "@/lib/api";
@@ -20,10 +19,16 @@ import useWorkspaceId from "@/hooks/use-workspace-id";
 import { toast } from "@/hooks/use-toast";
 import { Loader } from "lucide-react";
 import { Permissions } from "@/constant";
+import { selectHasPermission } from "@/features/auth/authSelectors";
+import { useAppSelector } from "@/hooks/redux-hooks";
+import { selectWorkspace } from "@/features/workspace/workspaceSelectors";
 
 export default function EditWorkspaceForm() {
-  const { workspace, hasPermission } = useAuthContext();
-  const canEditWorkspace = hasPermission(Permissions.EDIT_WORKSPACE);
+  const workspace = useAppSelector(selectWorkspace);
+
+  const canEditWorkspace = useAppSelector((state) =>
+    selectHasPermission(state, Permissions.EDIT_WORKSPACE)
+  );
 
   const queryClient = useQueryClient();
   const workspaceId = useWorkspaceId();
